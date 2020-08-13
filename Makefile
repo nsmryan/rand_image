@@ -6,18 +6,18 @@ build.release:=-O3
 build.debug:=-O0 -g3
 BUILD_FLAGS:=$(build.$(BUILD))
 
-INC:=-Idep/swill/Include -Idep/lodepng -Idep/logc -Idep/fann/src/include
+INC:=-Idep/swill/Include -Idep/lodepng -Idep/logc -Idep/fann/src/include -Idep/genann
 CFLAGS ?= -Wall -Werror -Wextra -Wno-cast-function-type -O0 $(INC) $(BUILD_FLAGS)
-LDFLAGS:=-lm -Ldep/swill/ -lswill -Ldep/fann -lfann
+LDFLAGS:=-lm -Ldep/swill/ -lswill 
 
-FILES:=src/swell.c dep/lodepng/lodepng.c dep/logc/log.c
+FILES:=dep/lodepng/lodepng.c dep/logc/log.c dep/genann/genann.c
 
 .PHONY: all
 all: swell
 
-swell: dep/swill/libswill.a dep/fann/libfann.a
+swell: dep/swill/libswill.a 
 	mkdir -p build
-	$(CC) $(FILES) $(CFLAGS) $(LDFLAGS) -o build/swell
+	$(CC) src/swell.c $(FILES) $(CFLAGS) $(LDFLAGS) -o build/swell
 
 .ONESHELL:
 dep/swill/libswill.a:
@@ -28,18 +28,9 @@ dep/swill/libswill.a:
 	./configure
 	make -j
 
-.ONESHELL:
-dep/fann/libfann.a:
-	cd dep 
-	-git clone https://github.com/libfann/fann
-	cd fann
-	git checkout 7ec1fc7e5bd734f1d3c89b095e630e83c86b9be1
-	mkdir build
-	cd build
-	cmake ..
-	make -j fann_static
-	cp src/libfann.a ..
-
+build/%.o: %.c
+	$(CC) $^ -o $@ -c $(CFLAGS) $(INC)
+	cp $@ build/
 
 .PHONY: clean
 clean:
