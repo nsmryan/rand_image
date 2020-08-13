@@ -6,18 +6,18 @@ build.release:=-O3
 build.debug:=-O0 -g3
 BUILD_FLAGS:=$(build.$(BUILD))
 
-INC:=-Idep/swill/Include -Idep/lodepng -Idep/logc -Idep/fann/src/include -Idep/genann
+INC:=-Idep/swill/Include -Idep/lodepng -Idep/logc
 CFLAGS ?= -Wall -Werror -Wextra -Wno-cast-function-type -O0 $(INC) $(BUILD_FLAGS)
 LDFLAGS:=-lm -Ldep/swill/ -lswill 
 
-FILES:=dep/lodepng/lodepng.c dep/logc/log.c dep/genann/genann.c
+FILES:=dep/lodepng/lodepng.c dep/logc/log.c
 
 .PHONY: all
-all: swell
+all: rand_image
 
-swell: dep/swill/libswill.a 
+rand_image: dep/swill/libswill.a 
 	mkdir -p build
-	$(CC) src/swell.c $(FILES) $(CFLAGS) $(LDFLAGS) -o build/swell
+	$(CC) src/rand_image.c $(FILES) $(CFLAGS) $(LDFLAGS) -o build/rand_image
 
 .ONESHELL:
 dep/swill/libswill.a:
