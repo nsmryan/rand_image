@@ -2,7 +2,7 @@
 This is just a silly little project, written in C, that servers a random PNG
 image over localhost:8080. It started as a way to try out the
 [swill](https://github.com/dspinellis/swill) library. It was supposed to be
-more interesting than a random image, but I am giving up on it.
+more interesting than a random image, but I calling it where it is.
 
 
 The potentially interesting aspects of this code are: the makefile has a little
